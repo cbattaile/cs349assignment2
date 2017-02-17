@@ -33,7 +33,7 @@ public class Client implements IM_Client {
                 System.out.println("You have successfully registered your username.");
                 registry.bind(username, clientStub);
             } else {
-                System.out.println("There was a problem with your registration. Please try another username. Press q to quit.");
+                System.out.println("There was a problem with your registration. Please try another username.");
                 setUsernameAndRegister(c,clientStub,serverStub);
             }
         } catch (Exception e) {
@@ -51,7 +51,7 @@ public class Client implements IM_Client {
             Client obj = new Client();
             IM_Client clientStub = (IM_Client) UnicastRemoteObject.exportObject(obj, 0);
             Console console = System.console();
-            System.out.println("Press q at any time to quit.");
+            System.out.println("Type 'q' to quit.");
             setUsernameAndRegister(console,clientStub,serverStub);
             while(true) {
                 String input = console.readLine();
@@ -74,22 +74,6 @@ public class Client implements IM_Client {
                         System.out.println("That is not a valid command, type 'get' or 'send-message'.");
                         break;
                 }
-                System.out.println("while");
-                // if (input.equals("get")) {
-                //     ArrayList<String> users = serverStub.viewUsers();
-                //     System.out.println(users.toString());
-                // }
-                // if (input.equals("send-message")) {
-                //     System.out.println("To: ");
-                //     String recipient = console.readLine();
-                //     System.out.println("Type your message: ");
-                //     String message = console.readLine();
-                //     serverStub.sendIM(message,recipient,username);
-                // }
-                // if (input.equals("q"))  {
-                //     System.out.println("Goodbye.");
-                //     break;
-                // }
             }
         } catch (Exception e) {
             System.err.println("Client exception: " + e.toString());
