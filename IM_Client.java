@@ -4,6 +4,5 @@ import java.util.*;
 
 public interface IM_Client extends Remote {
     void receiveIM(String message, String sender) throws RemoteException;
-    String getUsername() throws RemoteException;
-
+    void receiveServerMessage(String serverMessage) throws RemoteException;
 }

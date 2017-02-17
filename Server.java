@@ -29,20 +29,19 @@ public class Server implements IM_Server {
     }
 
     public boolean sendIM(String message, String recipient, String sender) throws RemoteException {
-        if (!userList.contains(recipient)) {
-            System.out.println("The user you are trying to message does not exist.");
-            return false;
-        } else {
-            //call receiveIM for client with username recipient
-            try {
-                IM_Client stubClient = (IM_Client) registry.lookup(recipient);
+        try {
+            IM_Client stubClient = (IM_Client) registry.lookup(recipient);
+            if (!userList.contains(recipient)) {
+                stubClient.receiveServerMessage("The user you are trying to message does not exist. Try again.");
+                return false;
+            } else {
                 stubClient.receiveIM(message, sender);
                 return true;
-            } catch (Exception e) {
-                System.err.println("Server exception: " + e.toString());
-                e.printStackTrace();
-                return false;
             }
+        } catch (Exception e) {
+            System.err.println("Server exception: " + e.toString());
+            e.printStackTrace();
+            return false;
         }
     }
         

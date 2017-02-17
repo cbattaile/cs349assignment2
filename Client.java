@@ -20,8 +20,8 @@ public class Client implements IM_Client {
         System.out.println(message);
     }
 
-    public String getUsername() throws RemoteException {
-        return username;
+    public void receiveServerMessage(String serverMessage) throws RemoteException {
+        System.out.println(serverMessage);
     }
 
     private static void setUsernameAndRegister(Console c, IM_Client clientStub, IM_Server serverStub) {
@@ -54,22 +54,42 @@ public class Client implements IM_Client {
             System.out.println("Press q at any time to quit.");
             setUsernameAndRegister(console,clientStub,serverStub);
             while(true) {
+                String input = console.readLine();
+                switch (input) {
+                    case "get":
+                        ArrayList<String> users = serverStub.viewUsers();
+                        System.out.println(users.toString());
+                        break;
+                    case "send-message":
+                        System.out.println("To: ");
+                        String recipient = console.readLine();
+                        System.out.println("Type your message: ");
+                        String message = console.readLine();
+                        serverStub.sendIM(message,recipient,username);
+                        break;
+                    case "q":
+                        System.out.println("Goodbye.");
+                        break;
+                    default:
+                        System.out.println("That is not a valid command, type 'get' or 'send-message'.");
+                        break;
+                }
                 System.out.println("while");
-                if (console.readLine().equals("get")) {
-                    ArrayList<String> users = serverStub.viewUsers();
-                    System.out.println(users.toString());
-                }
-                if (console.readLine().equals("send-message")) {
-                    System.out.println("To: ");
-                    String recipient = console.readLine();
-                    System.out.println("Type your message: ");
-                    String message = console.readLine();
-                    serverStub.sendIM(message,recipient,username);
-                }
-                if (console.readLine().equals("q"))  {
-                    System.out.println("Goodbye.");
-                    break;
-                }
+                // if (input.equals("get")) {
+                //     ArrayList<String> users = serverStub.viewUsers();
+                //     System.out.println(users.toString());
+                // }
+                // if (input.equals("send-message")) {
+                //     System.out.println("To: ");
+                //     String recipient = console.readLine();
+                //     System.out.println("Type your message: ");
+                //     String message = console.readLine();
+                //     serverStub.sendIM(message,recipient,username);
+                // }
+                // if (input.equals("q"))  {
+                //     System.out.println("Goodbye.");
+                //     break;
+                // }
             }
         } catch (Exception e) {
             System.err.println("Client exception: " + e.toString());
